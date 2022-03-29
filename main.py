@@ -7,11 +7,18 @@ from pandas import read_excel
 
 
 def get_winery_age(start_year):
-    measurements = ('лет', 'год', 'года', 'года', 'года',
-                    'лет', 'лет', 'лет', 'лет', 'лет')
-
     age = str(datetime.date.today().year - start_year)
-    return f'{age} {measurements[int(age[-1])]}'
+    
+    age_tens = '0' if len(age) <= 1 else age[-2]
+    age_units = age[-1]
+    measure = 'лет'
+    if age_tens != '1':
+        if age_units == '1':
+            measure = 'год'
+        elif age_units in '234':
+            measure = 'года'
+
+    return f'{age} {measure}'
 
 
 def get_drinks_by_category(filename):
