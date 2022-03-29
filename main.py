@@ -6,10 +6,10 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from pandas import read_excel
 
 
-def get_winery_age():
+def get_winery_age(start_year):
     measurements = ('лет', 'год', 'года', 'года', 'года',
                     'лет', 'лет', 'лет', 'лет', 'лет')
-    start_year = 1920
+
     age = str(datetime.date.today().year - start_year)
     return f'{age} {measurements[int(age[-1])]}'
 
@@ -24,6 +24,7 @@ def get_drinks_by_category(filename):
 
 
 if __name__ == "__main__":
+    start_year = 1920
     env = Environment(
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
@@ -32,7 +33,7 @@ if __name__ == "__main__":
     template = env.get_template('template.html')
 
     rendered_page = template.render(
-        winery_age=get_winery_age(),
+        winery_age=get_winery_age(start_year),
         drinks_by_category=get_drinks_by_category('wine.xlsx')
     )
 
